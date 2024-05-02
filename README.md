@@ -4,8 +4,8 @@ Config based on
 
 ## NOTES:
 
-`:e .` - open netrw for current path (I often use it as refresh)
-`:cd %:p:h` - Change directory to the parent directory of the current file
+- `:e .` - open netrw for current path (I often use it as refresh)
+- `:cd %:p:h` - Change directory to the parent directory of the current file
 
 Breaking it down:
 
