@@ -1,0 +1,5 @@
+return {
+	{
+		"Krztk/vim-slash",
+	},
+}
