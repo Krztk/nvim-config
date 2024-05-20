@@ -18,3 +18,7 @@ end, {
 		return get_session_files()
 	end,
 })
+
+vim.api.nvim_create_user_command("PathSet", function()
+	vim.cmd("cd %:p:h")
+end, { nargs = 0 })

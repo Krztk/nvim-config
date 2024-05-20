@@ -12,7 +12,8 @@ vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next [D]iagn
 vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "Show diagnostic [E]rror messages" })
 vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
 
--- windows only
 vim.keymap.set("n", "<F5>", function()
-	vim.cmd("e " .. "~/AppData/local/nvim/init.lua")
+	local initFilePath = vim.fn.stdpath("config") .. "/init.lua"
+	print(initFilePath)
+	vim.cmd("e " .. initFilePath)
 end, { desc = "Open config file" })
