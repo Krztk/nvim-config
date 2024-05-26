@@ -1,4 +1,5 @@
 require("config.options")
+require("config.neovide")
 require("config.commands")
 require("config.mappings")
 require("config.autocommands")
