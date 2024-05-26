@@ -10,6 +10,7 @@ return {
 			-- Useful status updates for LSP.
 			-- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
 			{ "j-hui/fidget.nvim", opts = {} },
+			"Hoffs/omnisharp-extended-lsp.nvim",
 		},
 		config = function()
 			-- Brief Aside: **What is LSP?**
@@ -99,11 +100,14 @@ return {
 					--  For example, in C this would take you to the header
 					map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
 
-					-- map("<leader>H", function()
-					-- 	vim.lsp.inlay_hint.enable(0, not vim.lsp.inlay_hint.is_enabled())
-					-- end, "Toggle inline [H]ints")
-
 					local client = vim.lsp.get_client_by_id(event.data.client_id)
+
+					-- override base commands with extra implementation for omnisharp server
+					if client and client.name == "omnisharp" then
+						map("gd", require("omnisharp_extended").telescope_lsp_definition, "[G]oto [D]efinition")
+						map("gr", require("omnisharp_extended").telescope_lsp_references, "[G]oto [R]eferences")
+						map("gI", require("omnisharp_extended").telescope_lsp_implementation, "[G]oto [I]mplementation")
+					end
 
 					if client and client.server_capabilities.inlayHintProvider then
 						map("<leader>th", function()
