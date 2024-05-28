@@ -1,7 +1,26 @@
 local session_folder = vim.fn.stdpath("config") .. "/sessions/"
 
-local function get_session_files()
-	return vim.split(vim.fn.glob(session_folder .. "*.vim"), "\n", { trimempty = true })
+local handle_session_selection = function()
+	local session_files = vim.fn.glob(session_folder .. "*.vim", false, true)
+
+	local match_filename_windows = "^.+\\(.+)$"
+	local match_filename_linux = "^.+/(.+)$"
+	local match_filename_str = match_filename_linux
+
+	if vim.loop.os_uname().sysname == "Windows_NT" then
+		match_filename_str = match_filename_windows
+	end
+
+	vim.ui.select(session_files, {
+		prompt = "Select a session",
+		format_item = function(item)
+			return item:match(match_filename_str)
+		end,
+	}, function(choice)
+		if choice ~= nil then
+			vim.cmd("source " .. choice)
+		end
+	end)
 end
 
 vim.api.nvim_create_user_command("SessionSave", function(opts)
@@ -9,16 +28,28 @@ vim.api.nvim_create_user_command("SessionSave", function(opts)
 	print("Session saved")
 end, { nargs = 1 })
 
-vim.api.nvim_create_user_command("SessionLoad", function(opts)
-	vim.cmd("source " .. opts.fargs[1])
-	print("Session loaded " .. opts.fargs[1])
+vim.api.nvim_create_user_command("SessionLoad", function()
+	handle_session_selection()
 end, {
-	nargs = 1,
-	complete = function(ArgLead, CmdLine, CursorPos)
-		return get_session_files()
-	end,
+	nargs = 0,
 })
 
 vim.api.nvim_create_user_command("PathSet", function()
 	vim.cmd("cd %:p:h")
 end, { nargs = 0 })
+
+local function edit_neovim()
+	require("telescope.builtin").git_files({
+		shorten_path = false,
+		cwd = vim.fn.stdpath("config"),
+		prompt = "~ dotfiles ~",
+		height = 10,
+
+		layout_strategy = "horizontal",
+		layout_options = {
+			preview_width = 0.75,
+		},
+	})
+end
+
+vim.api.nvim_create_user_command("Config", edit_neovim, { nargs = 0 })
