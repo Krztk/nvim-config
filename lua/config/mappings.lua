@@ -17,3 +17,5 @@ vim.keymap.set("n", "<F5>", function()
 	print(initFilePath)
 	vim.cmd("e " .. initFilePath)
 end, { desc = "Open config file" })
+
+vim.keymap.set("n", "<leader>b", "<cmd>lua MiniFiles.open()<CR>", { desc = "[Mini.files] Find Files" })
