@@ -11,8 +11,6 @@ local t = ls.text_node
 local f = ls.function_node
 
 local function suggest_filename(fname, dname)
-	print("fname", vim.inspect(fname))
-	print("dname", vim.inspect(dname))
 	if fname == "index" then
 		return vim.fn.substitute(dname, "^.*/", "", "g")
 	else
