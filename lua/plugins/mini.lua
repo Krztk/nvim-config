@@ -2,7 +2,18 @@ return {
 	{ -- Collection of various small independent plugins/modules
 		"echasnovski/mini.nvim",
 		config = function()
-			require("mini.files").setup()
+			local minifiles = require("mini.files")
+			minifiles.setup()
+
+			vim.keymap.set("n", "<leader>fe", minifiles.open, { desc = "MiniFiles open" })
+			vim.keymap.set("n", "<leader>fE", function()
+				if vim.fn.filereadable(vim.fn.bufname("%")) > 0 then
+					minifiles.open(vim.api.nvim_buf_get_name(0))
+					minifiles.reveal_cwd()
+				else
+					minifiles.open()
+				end
+			end, { desc = "mini.files open current" })
 			-- Better Around/Inside textobjects
 			--
 			-- Examples:
@@ -37,4 +48,3 @@ return {
 		end,
 	},
 }
-
