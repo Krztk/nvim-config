@@ -166,6 +166,17 @@ return {
 				tsserver = {
 					capabilities = {},
 				},
+
+				eslint = {
+					filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
+					settings = {
+						workingDirectory = {
+							mode = "auto",
+						},
+						format = { enable = false },
+						lint = { enable = true },
+					},
+				},
 				--
 				fsautocomplete = {},
 
