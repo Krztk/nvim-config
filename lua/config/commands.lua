@@ -24,7 +24,7 @@ local handle_session_selection = function()
 end
 
 vim.api.nvim_create_user_command("SessionSave", function(opts)
-	vim.cmd("mksession " .. session_folder .. opts.fargs[1] .. ".vim")
+	vim.cmd("mksession! " .. session_folder .. opts.fargs[1] .. ".vim")
 	print("Session saved")
 end, { nargs = 1 })
 
