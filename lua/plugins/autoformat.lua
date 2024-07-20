@@ -1,4 +1,4 @@
-local prettier = { "prettierd", "prettier" }
+local prettier = { "prettierd", "prettier", stop_after_first = true }
 
 return {
 	{ -- Autoformat
@@ -11,19 +11,18 @@ return {
 			},
 			formatters_by_ft = {
 				lua = { "stylua" },
-				javascript = { prettier },
-				typescript = { prettier },
-				javascriptreact = { prettier },
-				typescriptreact = { prettier },
-				css = { prettier },
-				html = { prettier },
-				json = { prettier },
-				jsonc = { prettier },
-				yaml = { prettier },
-				markdown = { prettier, "injected" },
-				graphql = { prettier },
+				javascript = prettier,
+				typescript = prettier,
+				javascriptreact = prettier,
+				typescriptreact = prettier,
+				css = prettier,
+				html = prettier,
+				json = prettier,
+				jsonc = prettier,
+				yaml = prettier,
+				markdown = { "prettierd", "prettier", "injected", stop_after_first = true },
+				graphql = prettier,
 			},
 		},
 	},
 }
-
