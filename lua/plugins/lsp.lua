@@ -55,6 +55,8 @@ return {
 						vim.keymap.set("n", keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
 					end
 
+					vim.keymap.set("i", "<c-s-k>", vim.lsp.buf.signature_help, { buffer = event.buf })
+
 					-- Jump to the definition of the word under your cursor.
 					--  This is where a variable was first declared, or where a function is defined, etc.
 					--  To jump back, press <C-T>.
@@ -188,9 +190,9 @@ return {
 								-- If lua_ls is really slow on your computer, you can try this instead:
 								-- library = { vim.env.VIMRUNTIME },
 							},
-							completion = {
-								callSnippet = "Replace",
-							},
+							-- completion = {
+							-- 	callSnippet = "Replace",
+							-- },
 							-- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
 							-- diagnostics = { disable = { 'missing-fields' } },
 						},

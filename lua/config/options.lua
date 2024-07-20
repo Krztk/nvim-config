@@ -1,11 +1,11 @@
 -- leaders
-vim.g.mapleader = ' '
-vim.g.maplocalleader = ' '
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
 
 -- case
 
 -- mouse
-vim.opt.mouse = 'a'
+vim.opt.mouse = "a"
 
 -- enable line number and relative line number
 vim.opt.number = true
@@ -18,11 +18,12 @@ vim.opt.tabstop = 2
 vim.opt.softtabstop = 2
 vim.opt.expandtab = true
 
--- 
+--
 vim.opt.swapfile = false
 
 -- search
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 vim.opt.hlsearch = true
-vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>') -- Clear hlsearch on pressing <Esc> in normal mode
+vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>") -- Clear hlsearch on pressing <Esc> in normal mode
+
