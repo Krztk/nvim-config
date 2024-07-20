@@ -10,11 +10,21 @@ local fmt = require("luasnip.extras.fmt").fmt
 local t = ls.text_node
 local f = ls.function_node
 
+local function to_title_case(str)
+	return string.sub(str, 1, 1):upper() .. string.sub(str, 2):lower()
+end
+
+local function to_pascal_case(str)
+	local parts = vim.tbl_map(to_title_case, vim.split(str, "-"))
+	return table.concat(parts, "")
+end
+
 local function suggest_filename(fname, dname)
 	if fname == "index" then
-		return vim.fn.substitute(dname, "^.*/", "", "g")
+		local normalized = vim.fn.substitute(dname, "\\", "/", "g")
+		return to_pascal_case(vim.fn.matchstr(normalized, [[\([^/]*\)$]]))
 	else
-		return fname
+		return to_pascal_case(fname)
 	end
 end
 
