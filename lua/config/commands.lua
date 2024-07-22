@@ -53,3 +53,7 @@ local function edit_neovim()
 end
 
 vim.api.nvim_create_user_command("Config", edit_neovim, { nargs = 0 })
+
+vim.api.nvim_create_user_command("FontSize", function(opts)
+	vim.o.guifont = "LiterationMono Nerd Font:h" .. opts.fargs[1]
+end, { nargs = 1 })
