@@ -15,7 +15,11 @@ local function to_title_case(str)
 end
 
 local function to_pascal_case(str)
-	local parts = vim.tbl_map(to_title_case, vim.split(str, "-"))
+	local parts = vim.split(str, "-")
+	if #parts <= 1 then
+		return str
+	end
+	parts = vim.tbl_map(to_title_case, parts)
 	return table.concat(parts, "")
 end
 
@@ -29,7 +33,6 @@ local function suggest_filename(fname, dname)
 end
 
 ls.add_snippets("typescriptreact", {
-	s("cl", fmt("console.log({});{}", { i(1), i(0) })),
 	s("di", fmt("<div>{}</div>", { i(0) })),
 	s('di"', fmt('<div className="{}">{}</div>', { i(1), i(0) })),
 	s("di{", fmt("<div className={{{}}}>{}</div>", { i(1), i(0) })),
@@ -86,3 +89,5 @@ ls.add_snippets("typescriptreact", {
 		)
 	),
 })
+
+ls.filetype_extend("typescriptreact", { "typescript" })
