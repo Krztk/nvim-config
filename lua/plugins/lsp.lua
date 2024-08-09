@@ -176,6 +176,12 @@ return {
 						format = { enable = false },
 						lint = { enable = true },
 					},
+					-- on_attach = function(client, bufnr)
+					-- 	vim.api.nvim_create_autocmd("BufWritePre", {
+					-- 		buffer = bufnr,
+					-- 		command = "EslintFixAll",
+					-- 	})
+					-- end,
 				},
 				--
 				fsautocomplete = {},
