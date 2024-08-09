@@ -88,6 +88,7 @@ ls.add_snippets("typescriptreact", {
 			}
 		)
 	),
+	s("pro", fmt("{{{}}} : {}", { i(2), i(1, "Props") })),
 })
 
 ls.filetype_extend("typescriptreact", { "typescript" })
