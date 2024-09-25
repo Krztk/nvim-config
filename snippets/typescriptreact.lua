@@ -16,9 +16,6 @@ end
 
 local function to_pascal_case(str)
 	local parts = vim.split(str, "-")
-	if #parts <= 1 then
-		return str
-	end
 	parts = vim.tbl_map(to_title_case, parts)
 	return table.concat(parts, "")
 end

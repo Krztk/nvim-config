@@ -57,3 +57,17 @@ vim.api.nvim_create_user_command("Config", edit_neovim, { nargs = 0 })
 vim.api.nvim_create_user_command("FontSize", function(opts)
 	vim.o.guifont = "LiterationMono Nerd Font:h" .. opts.fargs[1]
 end, { nargs = 1 })
+
+function ToggleVirtualText()
+	-- Fetch the current configuration
+	local current_config = vim.diagnostic.config()
+
+	-- Toggle the virtual_text setting by negating the current value
+	vim.diagnostic.config({
+		virtual_text = not current_config.virtual_text,
+	})
+
+	print("Virtual Text: " .. (not current_config.virtual_text and "Enabled" or "Disabled"))
+end
+
+vim.api.nvim_set_keymap("n", "<leader>tv", ":lua ToggleVirtualText()<CR>", { noremap = true, silent = true })

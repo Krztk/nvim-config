@@ -2,7 +2,8 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
--- case
+-- scroll
+vim.opt.scrolloff = 2
 
 -- mouse
 vim.opt.mouse = "a"
@@ -26,4 +27,3 @@ vim.opt.ignorecase = true
 vim.opt.smartcase = true
 vim.opt.hlsearch = true
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>") -- Clear hlsearch on pressing <Esc> in normal mode
-
