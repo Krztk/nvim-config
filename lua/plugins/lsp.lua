@@ -11,6 +11,7 @@ return {
 			-- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
 			{ "j-hui/fidget.nvim", opts = {} },
 			"Hoffs/omnisharp-extended-lsp.nvim",
+			"Issafalcon/lsp-overloads.nvim",
 		},
 		config = function()
 			-- Brief Aside: **What is LSP?**
@@ -54,8 +55,6 @@ return {
 					local map = function(keys, func, desc)
 						vim.keymap.set("n", keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
 					end
-
-					vim.keymap.set("i", "<c-s-k>", vim.lsp.buf.signature_help, { buffer = event.buf })
 
 					-- Jump to the definition of the word under your cursor.
 					--  This is where a variable was first declared, or where a function is defined, etc.
@@ -131,6 +130,49 @@ return {
 						vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
 							buffer = event.buf,
 							callback = vim.lsp.buf.clear_references,
+						})
+					end
+
+					if client and client.server_capabilities.signatureHelpProvider then
+						-- vim.keymap.set("i", "<c-s-k>", vim.lsp.buf.signature_help, { buffer = event.buf })
+						vim.keymap.set("i", "<c-s-k>", "<cmd>LspOverloadsSignature<CR>", { buffer = event.buf })
+						vim.keymap.set(
+							"n",
+							"<c-s-k>",
+							"<cmd>LspOverloadsSignature<CR>",
+							{ buffer = event.buf, silent = true, noremap = true }
+						)
+
+						require("lsp-overloads").setup(client, {
+							ui = {
+								border = "single",
+								height = nil,
+								width = nil,
+								wrap = true,
+								wrap_at = nil,
+								max_width = nil,
+								max_height = nil,
+								close_events = { "CursorMoved", "BufHidden", "InsertLeave" },
+								focusable = false,
+								focus = false,
+								offset_x = 0,
+								offset_y = 0,
+								floating_window_above_cur_line = false,
+								silent = true,
+								highlight = {
+									italic = true,
+									bold = true,
+									fg = "#ffffff",
+								},
+							},
+							keymaps = {
+								next_signature = "<A-j>",
+								previous_signature = "<A-k>",
+								next_parameter = "<A-l>",
+								previous_parameter = "<A-h>",
+								close_signature = "<c-s-k>",
+							},
+							display_automatically = false,
 						})
 					end
 				end,
