@@ -9,6 +9,7 @@ return {
 			require("which-key").add({
 
 				{ "<leader>c", group = "[C]ode" },
+				{ "<leader>p", group = "[P]ilot" },
 				{ "<leader>d", group = "[D]ocument" },
 				{ "<leader>r", group = "[R]ename" },
 				{ "<leader>s", group = "[S]earch" },

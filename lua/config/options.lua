@@ -1,3 +1,8 @@
+vim.api.nvim_set_keymap("", "<Space>", "<Nop>", { noremap = true, silent = true })
+if vim.fn.has("win32") == 1 then
+	vim.opt.isfname:append("(,)") -- :h isfname
+end
+
 -- leaders
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
