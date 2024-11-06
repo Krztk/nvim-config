@@ -21,3 +21,12 @@ end, { desc = "Open config file" })
 vim.keymap.set("n", "<leader>b", "<cmd>lua MiniFiles.open()<CR>", { desc = "[Mini.files] Find Files" })
 vim.keymap.set("n", "<F6>", "<cmd>Neorg index<CR>", { desc = "[Neorg] index" })
 vim.keymap.set("n", "<F7>", "<cmd>Neorg return<CR>", { desc = "[Neorg] return" })
+
+-- Copilot
+
+vim.keymap.set("i", "<S-C-l>", "<Plug>(copilot-accept-line)")
+vim.keymap.set("i", "<S-C-h>", "<Plug>(copilot-dismiss)")
+vim.keymap.set("i", "<M-l>", "<Plug>(copilot-accept-word)")
+vim.keymap.set("i", "<M-]>", "<Plug>(copilot-next)")
+vim.keymap.set("i", "<M-[>", "<Plug>(copilot-previous)")
+vim.keymap.set("i", "<M-\\>", "<Plug>(copilot-suggest)")
