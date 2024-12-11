@@ -21,3 +21,8 @@ end, { desc = "Open config file" })
 vim.keymap.set("n", "<leader>b", "<cmd>lua MiniFiles.open()<CR>", { desc = "[Mini.files] Find Files" })
 vim.keymap.set("n", "<F6>", "<cmd>Neorg index<CR>", { desc = "[Neorg] index" })
 vim.keymap.set("n", "<F7>", "<cmd>Neorg return<CR>", { desc = "[Neorg] return" })
+
+-- lua
+vim.keymap.set("n", "<leader>ts", "<cmd>source %<CR>")
+vim.keymap.set("n", "<leader>tl", ":.lua<CR>")
+vim.keymap.set("v", "<leader>tl", ":lua<CR>")

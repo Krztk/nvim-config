@@ -71,3 +71,25 @@ function ToggleVirtualText()
 end
 
 vim.api.nvim_set_keymap("n", "<leader>tv", ":lua ToggleVirtualText()<CR>", { noremap = true, silent = true })
+
+function GetFileRelativePath()
+	local filepath = vim.fn.expand("%:p")
+	local git_root = vim.fn.systemlist("git rev-parse --show-toplevel")[1]
+
+	if vim.v.shell_error ~= 0 then
+		print("Not in a git repository")
+		return
+	end
+
+	local relative_path = filepath:sub(#git_root + 2)
+	vim.fn.setreg("+", relative_path)
+	print("Copied relative path: " .. relative_path)
+	return relative_path
+end
+
+vim.keymap.set(
+	"n",
+	"<leader>dp",
+	GetFileRelativePath,
+	{ noremap = true, silent = true, desc = "Get '[D]ocument' relative [p]ath" }
+)
