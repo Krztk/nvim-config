@@ -93,3 +93,9 @@ vim.keymap.set(
 	GetFileRelativePath,
 	{ noremap = true, silent = true, desc = "Get '[D]ocument' relative [p]ath" }
 )
+
+vim.keymap.set("n", "<leader>df", function()
+	local file_path = vim.fn.expand("%:p")
+	vim.fn.setreg("+", file_path)
+	print("Copied file path: " .. file_path)
+end, { noremap = true, silent = true, desc = "Get '[D]ocument' [F]ull path" })
