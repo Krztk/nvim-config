@@ -120,7 +120,7 @@ return {
 						lint = { enable = true },
 					},
 				},
-				--
+
 				fsautocomplete = {},
 				lua_ls = {
 					settings = {
