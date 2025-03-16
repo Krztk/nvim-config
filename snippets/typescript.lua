@@ -13,6 +13,28 @@ local f = ls.function_node
 ls.add_snippets("typescript", {
 	s(
 		"us",
+		fmt("const [{}, {}] = useState({});{}", {
+			i(1),
+			d(2, function(args)
+				print(args)
+				print(args[1])
+				local name = args[1][1]
+				if name ~= nil and #name > 0 then
+					name = "set" .. string.sub(name, 1, 1):upper() .. string.sub(name, 2)
+				else
+					name = ""
+				end
+
+				return sn(nil, {
+					i(1, name),
+				})
+			end, { 1 }),
+			i(3),
+			i(0),
+		})
+	),
+	s(
+		"ust",
 		fmt("const [{}, {}] = useState<{}>({});{}", {
 			i(1),
 			d(2, function(args)

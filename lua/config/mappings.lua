@@ -19,8 +19,6 @@ vim.keymap.set("n", "<F5>", function()
 end, { desc = "Open config file" })
 
 vim.keymap.set("n", "<leader>b", "<cmd>lua MiniFiles.open()<CR>", { desc = "[Mini.files] Find Files" })
-vim.keymap.set("n", "<F6>", "<cmd>Neorg index<CR>", { desc = "[Neorg] index" })
-vim.keymap.set("n", "<F7>", "<cmd>Neorg return<CR>", { desc = "[Neorg] return" })
 
 -- lua
 vim.keymap.set("n", "<leader>ts", "<cmd>source %<CR>")
@@ -42,3 +40,42 @@ vim.keymap.set("", "<leader>dc", function()
 		end
 	end)
 end, { desc = "Format code" })
+
+vim.keymap.set("n", "<leader>ttd", "<cmd>colorscheme tokyonight-day<CR>")
+
+-- terminal
+vim.keymap.set("t", "<C-k><C-j>", [[<C-\><C-n>]], { noremap = true, silent = true })
+
+--diff
+local function toggle_diffview(cmd)
+	if next(require("diffview.lib").views) == nil then
+		vim.cmd(cmd)
+	else
+		vim.cmd("DiffviewClose")
+	end
+end
+
+vim.keymap.set("n", "<leader>dvi", function()
+	toggle_diffview("DiffviewOpen")
+end, { desc = "Diff Index", noremap = true, silent = true })
+vim.keymap.set("n", "<leader>dvm", function()
+	toggle_diffview("DiffviewOpen master..HEAD")
+end, { desc = "Diff Master", noremap = true, silent = true })
+vim.keymap.set("n", "<leader>dvf", function()
+	toggle_diffview("DiffviewFileHistory %")
+end, { desc = "Current file diff", noremap = true, silent = true })
+
+local diff_opts = {
+	"filler,internal,closeoff,algorithm:histogram,context:3,linematch:60",
+	"internal,filler,closeoff,indent-heuristic,linematch:60,algorithm:histogram,context:3",
+}
+
+local current_diff_opt = 1
+
+local function toggle_diffopt()
+	current_diff_opt = (current_diff_opt % #diff_opts) + 1
+	vim.opt.diffopt = diff_opts[current_diff_opt]
+	print("Diffopt set to: " .. diff_opts[current_diff_opt])
+end
+
+vim.keymap.set("n", "<leader>td", toggle_diffopt, { desc = "Toggle diff strategy" })

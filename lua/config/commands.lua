@@ -119,3 +119,28 @@ vim.api.nvim_create_user_command("FormatEnable", function()
 end, {
 	desc = "Re-enable autoformat-on-save",
 })
+
+local colorschemes = {
+	"tokyonight-night",
+	"tokyonight-day",
+}
+
+function GetCurrentColorScheme()
+	return vim.g.colors_name
+end
+
+function ToggleColorscheme()
+	local current = GetCurrentColorScheme()
+	local next_index = 1
+	for i, cs in ipairs(colorschemes) do
+		if cs == current then
+			next_index = (i % #colorschemes) + 1
+			break
+		end
+	end
+	vim.cmd("colorscheme " .. colorschemes[next_index])
+	print("Colorscheme changed to: " .. colorschemes[next_index])
+end
+
+-- Map to a keybinding (example: <leader>cs)
+vim.api.nvim_set_keymap("n", "<leader>tt", ":lua ToggleColorscheme()<CR>", { noremap = true, silent = true })
