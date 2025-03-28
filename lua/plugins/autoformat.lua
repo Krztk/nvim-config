@@ -1,4 +1,4 @@
-local prettier = { "eslint_d", "prettierd", "prettier", stop_after_first = false }
+local prettier = { "eslint_d", "prettierd", stop_after_first = false }
 
 return {
 	{ -- Autoformat
@@ -28,7 +28,7 @@ return {
 				json = prettier,
 				jsonc = prettier,
 				yaml = prettier,
-				markdown = { "prettierd", "prettier", "injected", stop_after_first = true },
+				markdown = { "prettierd", "injected", stop_after_first = true },
 				graphql = prettier,
 			},
 		},
