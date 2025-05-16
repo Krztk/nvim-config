@@ -139,6 +139,17 @@ return {
 						},
 					},
 				},
+				tailwindcss = {
+					settings = {
+						tailwindCSS = {
+							experimental = {
+								classRegex = {
+									{ "cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]" },
+								},
+							},
+						},
+					},
+				},
 			}
 
 			require("mason").setup()

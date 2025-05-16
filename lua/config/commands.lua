@@ -142,5 +142,4 @@ function ToggleColorscheme()
 	print("Colorscheme changed to: " .. colorschemes[next_index])
 end
 
--- Map to a keybinding (example: <leader>cs)
 vim.api.nvim_set_keymap("n", "<leader>tt", ":lua ToggleColorscheme()<CR>", { noremap = true, silent = true })

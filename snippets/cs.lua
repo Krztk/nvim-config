@@ -11,6 +11,7 @@ local function format_filename(fname)
 end
 
 ls.add_snippets("cs", {
+	s("ns", fmt("namespace ", {})),
 	s(
 		"fc",
 		fmt(

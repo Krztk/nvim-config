@@ -41,8 +41,6 @@ vim.keymap.set("", "<leader>dc", function()
 	end)
 end, { desc = "Format code" })
 
-vim.keymap.set("n", "<leader>ttd", "<cmd>colorscheme tokyonight-day<CR>")
-
 -- terminal
 vim.keymap.set("t", "<C-k><C-j>", [[<C-\><C-n>]], { noremap = true, silent = true })
 
@@ -79,3 +77,11 @@ local function toggle_diffopt()
 end
 
 vim.keymap.set("n", "<leader>td", toggle_diffopt, { desc = "Toggle diff strategy" })
+
+local status_ok, _ = pcall(require, "config.mappings_local")
+if not status_ok then
+	vim.notify(
+		"[mappings.lua] Skipping private mappings: 'config/mappings_local.lua' not available.",
+		vim.log.levels.INFO
+	)
+end
