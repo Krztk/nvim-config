@@ -4,7 +4,6 @@ return {
 		dependencies = {
 			"williamboman/mason.nvim",
 			"williamboman/mason-lspconfig.nvim",
-			"WhoIsSethDaniel/mason-tool-installer.nvim",
 			{ "j-hui/fidget.nvim", opts = {} },
 			"Hoffs/omnisharp-extended-lsp.nvim",
 			"Issafalcon/lsp-overloads.nvim",
@@ -109,19 +108,16 @@ return {
 				ts_ls = {
 					capabilities = {},
 				},
-
-				eslint = {
-					filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
-					settings = {
-						workingDirectory = {
-							mode = "auto",
-						},
-						format = { enable = false },
-						lint = { enable = true },
-					},
-				},
-
-				fsautocomplete = {},
+				-- eslint = {
+				--   filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
+				--   settings = {
+				--     workingDirectory = {
+				--       mode = "auto",
+				--     },
+				--     format = { enable = false },
+				--     lint = { enable = true },
+				--   },
+				-- },
 				lua_ls = {
 					settings = {
 						Lua = {
@@ -152,25 +148,21 @@ return {
 				},
 			}
 
+			vim.lsp.config("*", {
+				capabilities = vim.lsp.protocol.make_client_capabilities(),
+			})
+
+			for server_name, server_config in pairs(servers) do
+				vim.lsp.config(server_name, server_config)
+			end
+
 			require("mason").setup()
 
 			local ensure_installed = vim.tbl_keys(servers or {})
-			vim.list_extend(ensure_installed, {
-				"stylua",
-			})
-			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
 			require("mason-lspconfig").setup({
-				handlers = {
-					function(server_name)
-						local server = servers[server_name] or {}
-						-- This handles overriding only values explicitly passed
-						-- by the server configuration above. Useful when disabling
-						-- certain features of an LSP (for example, turning off formatting for tsserver)
-						server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
-						require("lspconfig")[server_name].setup(server)
-					end,
-				},
+				ensure_installed = ensure_installed,
+				automatic_enable = true,
 			})
 		end,
 	},
