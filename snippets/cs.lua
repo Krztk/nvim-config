@@ -47,6 +47,44 @@ ls.add_snippets("cs", {
 		)
 	),
 	s(
+		"clas",
+		fmt(
+			[[
+  public sealed class {}
+  {{
+  {}
+  }}
+      ]],
+			{
+				d(1, function(_, snip)
+					return sn(1, {
+						i(1, format_filename(snip.env.TM_FILENAME_BASE)),
+					})
+				end, {}),
+				i(0),
+			}
+		)
+	),
+	s(
+		"inter",
+		fmt(
+			[[
+  public interface {}
+  {{
+  {}
+  }}
+      ]],
+			{
+				d(1, function(_, snip)
+					return sn(1, {
+						i(1, format_filename(snip.env.TM_FILENAME_BASE)),
+					})
+				end, {}),
+				i(0),
+			}
+		)
+	),
+	s(
 		"ctor",
 		fmt(
 			[[

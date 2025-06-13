@@ -11,7 +11,7 @@ return {
 				{ "<leader>c", group = "[C]ode" },
 				{ "<leader>p", group = "[P]ilot" },
 				{ "<leader>d", group = "[D]ocument" },
-				{ "<leader>r", group = "[R]ename" },
+				{ "<leader>r", group = "[R]ename/[R]eplace" },
 				{ "<leader>s", group = "[S]earch" },
 				{ "<leader>w", group = "[W]orkspace" },
 			})

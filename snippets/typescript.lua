@@ -58,6 +58,9 @@ ls.add_snippets("typescript", {
 	),
 	s("ue", fmt("useEffect(() => {{{}}}, [{}]);{}", { i(1), i(2), i(0) })),
 	s("cl", fmt("console.log({});{}", { i(1), i(0) })),
+	s("ar", fmt("({}) => ({})", { i(1), i(0) })),
+	s("arr", fmt("({}) => {{{}}}", { i(1), i(0) })),
+	s("aro", fmt("({}) => ({{{}}})", { i(1), i(0) })),
 	s(
 		"proi",
 		fmt(
