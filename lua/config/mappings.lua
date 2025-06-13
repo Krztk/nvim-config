@@ -90,3 +90,84 @@ if not status_ok then
 		vim.log.levels.INFO
 	)
 end
+
+-- markdown navigation
+local function get_project_root()
+	-- Try to find git root first
+	local git_root = vim.fn.systemlist("git rev-parse --show-toplevel")[1]
+	if vim.v.shell_error == 0 and git_root and git_root ~= "" then
+		return git_root
+	end
+	-- Fallback to current working directory
+	return vim.fn.getcwd()
+end
+
+local function normalize_path(path)
+	-- Convert forward slashes to appropriate separator for the OS
+	if vim.fn.has("win32") == 1 then
+		return path:gsub("/", "\\")
+	end
+	return path
+end
+
+local function resolve_filepath(link_path, current_file_dir)
+	local filepath
+
+	if link_path:match("^/") then
+		-- Absolute path from project root
+		local project_root = get_project_root()
+		filepath = vim.fn.resolve(project_root .. link_path)
+	elseif link_path:match("^%./") then
+		-- Relative to current file's directory
+		filepath = vim.fn.resolve(current_file_dir .. "/" .. link_path:sub(3))
+	else
+		-- No prefix = relative to current file's directory
+		filepath = vim.fn.resolve(current_file_dir .. "/" .. link_path)
+	end
+
+	return normalize_path(filepath)
+end
+
+local function follow_markdown_link()
+	local line = vim.api.nvim_get_current_line()
+
+	-- Extract filename from [[path/filename]] or [text](path/filename.md)
+	local wiki_link = line:match("%[%[([^%]]+)%]%]")
+	local md_link = line:match("%[.-%]%(([^%)]+)%)")
+	local link_path = wiki_link or md_link
+
+	if link_path then
+		local current_file = vim.api.nvim_buf_get_name(0)
+		local current_file_dir = vim.fn.fnamemodify(current_file, ":h")
+
+		-- Handle wiki-style links - add .md if no extension
+		if wiki_link and not link_path:match("%.%w+$") then
+			link_path = link_path .. ".md"
+		end
+
+		local filepath = resolve_filepath(link_path, current_file_dir)
+
+		local success, err = pcall(function()
+			vim.cmd("edit " .. vim.fn.fnameescape(filepath))
+		end)
+
+		if not success then
+			print("Could not open file: " .. filepath)
+			-- vim.fn.mkdir(vim.fn.fnamemodify(filepath, ":h"), "p")
+			-- vim.cmd("edit " .. vim.fn.fnameescape(filepath))
+		end
+	else
+		-- No link found, just send Enter key
+		vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<CR>", true, false, true), "n", false)
+	end
+end
+
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "markdown",
+	callback = function()
+		vim.keymap.set("n", "<CR>", follow_markdown_link, {
+			buffer = true,
+			desc = "Follow markdown link",
+		})
+	end,
+})
