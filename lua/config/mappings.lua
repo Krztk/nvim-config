@@ -137,6 +137,20 @@ local function follow_markdown_link()
 	local link_path = wiki_link or md_link
 
 	if link_path then
+		if link_path:match("^https?://") then
+			local open_cmd
+			if vim.fn.has("win32") == 1 then
+				open_cmd = { "cmd", "/c", "start", "", link_path }
+			elseif vim.fn.has("mac") == 1 then
+				open_cmd = { "open", link_path }
+			else
+				open_cmd = { "xdg-open", link_path }
+			end
+
+			vim.fn.jobstart(open_cmd, { detach = true })
+			return
+		end
+
 		local current_file = vim.api.nvim_buf_get_name(0)
 		local current_file_dir = vim.fn.fnamemodify(current_file, ":h")
 
@@ -153,8 +167,6 @@ local function follow_markdown_link()
 
 		if not success then
 			print("Could not open file: " .. filepath)
-			-- vim.fn.mkdir(vim.fn.fnamemodify(filepath, ":h"), "p")
-			-- vim.cmd("edit " .. vim.fn.fnameescape(filepath))
 		end
 	else
 		-- No link found, just send Enter key
@@ -171,3 +183,56 @@ vim.api.nvim_create_autocmd("FileType", {
 		})
 	end,
 })
+
+-- filtering quickfix
+
+local function escape_quotes(pattern)
+	return vim.fn.escape(pattern, [["]])
+end
+
+vim.api.nvim_create_user_command("FilterTextContains", function(opts)
+	local pattern = escape_quotes(opts.args)
+	vim.cmd(string.format("call setqflist(filter(getqflist(), 'v:val.text =~ \"%s\"'), 'r')", pattern))
+end, { nargs = 1 })
+
+vim.api.nvim_create_user_command("FilterTextNotContains", function(opts)
+	local pattern = escape_quotes(opts.args)
+	vim.cmd(string.format("call setqflist(filter(getqflist(), 'v:val.text !~ \"%s\"'), 'r')", pattern))
+end, { nargs = 1 })
+
+local function get_displayed_filename(qf_item)
+	if qf_item.bufnr and qf_item.bufnr > 0 then
+		return vim.fn.bufname(qf_item.bufnr)
+	else
+		return ""
+	end
+end
+vim.api.nvim_create_user_command("FilterPathContains", function(opts)
+	local pattern = opts.args
+	local qflist = vim.fn.getqflist()
+	local filtered = {}
+
+	for _, item in ipairs(qflist) do
+		local filename = get_displayed_filename(item)
+		if vim.fn.match(filename, pattern) >= 0 then
+			table.insert(filtered, item)
+		end
+	end
+
+	vim.fn.setqflist(filtered, "r")
+end, { nargs = 1, desc = "Filter quickfix list to entries where path matches Vim regex pattern" })
+
+vim.api.nvim_create_user_command("FilterPathNotContains", function(opts)
+	local pattern = opts.args
+	local qflist = vim.fn.getqflist()
+	local filtered = {}
+
+	for _, item in ipairs(qflist) do
+		local filename = get_displayed_filename(item)
+		if vim.fn.match(filename, pattern) < 0 then
+			table.insert(filtered, item)
+		end
+	end
+
+	vim.fn.setqflist(filtered, "r")
+end, { nargs = 1, desc = "Filter quickfix list to entries where path does not match Vim regex pattern" })
