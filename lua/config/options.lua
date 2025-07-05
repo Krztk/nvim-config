@@ -35,3 +35,6 @@ vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>") -- Clear hlsearch on pressin
 
 -- diff
 vim.opt.diffopt = "filler,internal,closeoff,algorithm:histogram,context:3,linematch:60"
+
+-- other
+vim.opt.modeline = false
