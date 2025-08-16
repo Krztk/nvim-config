@@ -39,17 +39,7 @@ vim.api.nvim_create_user_command("PathSet", function()
 end, { nargs = 0 })
 
 local function edit_neovim()
-	require("telescope.builtin").git_files({
-		shorten_path = false,
-		cwd = vim.fn.stdpath("config"),
-		prompt = "~ dotfiles ~",
-		height = 10,
-
-		layout_strategy = "horizontal",
-		layout_options = {
-			preview_width = 0.75,
-		},
-	})
+	require("snacks.picker").files({ cwd = vim.fn.stdpath("config") })
 end
 
 vim.api.nvim_create_user_command("Config", edit_neovim, { nargs = 0 })

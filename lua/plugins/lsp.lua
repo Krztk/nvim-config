@@ -5,10 +5,14 @@ return {
 			"williamboman/mason.nvim",
 			"williamboman/mason-lspconfig.nvim",
 			{ "j-hui/fidget.nvim", opts = {} },
-			"Hoffs/omnisharp-extended-lsp.nvim",
+			{ "Krztk/omnisharp-extended-lsp.nvim", branch = "feat/add-support-for-snacks-picker" },
 			"Issafalcon/lsp-overloads.nvim",
 		},
 		config = function()
+			local ui_options = {
+				border = "rounded",
+			}
+
 			vim.api.nvim_create_autocmd("LspAttach", {
 				group = vim.api.nvim_create_augroup("lsp-plugin-lsp-attach", { clear = true }),
 				callback = function(event)
@@ -16,27 +20,29 @@ return {
 						vim.keymap.set("n", keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
 					end
 
-					map("gd", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
-					map("gr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
-					map("gI", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplementation")
-					map("<leader>D", require("telescope.builtin").lsp_type_definitions, "Type [D]efinition")
-					map("<leader>ds", require("telescope.builtin").lsp_document_symbols, "[D]ocument [S]ymbols")
-					map(
-						"<leader>ws",
-						require("telescope.builtin").lsp_dynamic_workspace_symbols,
-						"[W]orkspace [S]ymbols"
-					)
+					map("gd", require("snacks.picker").lsp_definitions, "[G]oto [D]efinition")
+					map("gr", require("snacks.picker").lsp_references, "[G]oto [R]eferences")
+					map("gI", require("snacks.picker").lsp_implementations, "[G]oto [I]mplementation")
+					map("<leader>D", require("snacks.picker").lsp_type_definitions, "Type [D]efinition")
+					map("<leader>ds", require("snacks.picker").lsp_symbols, "[D]ocument [S]ymbols")
+					map("<leader>ws", require("snacks.picker").lsp_workspace_symbols, "[W]orkspace [S]ymbols")
 					map("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
 					map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
-					map("K", vim.lsp.buf.hover, "Hover Documentation")
+					map("K", function()
+						vim.lsp.buf.hover(ui_options)
+					end, "Hover Documentation")
 					map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
 
 					local client = vim.lsp.get_client_by_id(event.data.client_id)
 
 					if client and client.name == "omnisharp" then
-						map("gd", require("omnisharp_extended").telescope_lsp_definition, "[G]oto [D]efinition")
-						map("gr", require("omnisharp_extended").telescope_lsp_references, "[G]oto [R]eferences")
-						map("gI", require("omnisharp_extended").telescope_lsp_implementation, "[G]oto [I]mplementation")
+						map("gd", require("omnisharp_extended").snacks_picker_lsp_definitions, "[G]oto [D]efinition")
+						map("gr", require("omnisharp_extended").snacks_picker_lsp_references, "[G]oto [R]eferences")
+						map(
+							"gI",
+							require("omnisharp_extended").snacks_picker_lsp_implementation,
+							"[G]oto [I]mplementation"
+						)
 					end
 
 					if client and client.server_capabilities.inlayHintProvider then
