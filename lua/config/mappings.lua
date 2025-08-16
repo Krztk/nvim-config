@@ -236,3 +236,24 @@ vim.api.nvim_create_user_command("FilterPathNotContains", function(opts)
 
 	vim.fn.setqflist(filtered, "r")
 end, { nargs = 1, desc = "Filter quickfix list to entries where path does not match Vim regex pattern" })
+
+-- visual selection to quickfix
+vim.api.nvim_create_user_command("PopulateQf", function()
+	local start_line = vim.fn.getpos("'<")[2]
+	local end_line = vim.fn.getpos("'>")[2]
+
+	local lines = vim.api.nvim_buf_get_lines(0, start_line - 1, end_line, false)
+
+	local qf_items = {}
+	for _, path in ipairs(lines) do
+		table.insert(qf_items, {
+			filename = path,
+			lnum = 1,
+			col = 1,
+			text = path,
+		})
+	end
+
+	vim.fn.setqflist({}, " ", { title = "From Visual Selection", items = qf_items })
+	vim.cmd("copen")
+end, { range = true })
