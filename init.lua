@@ -1,3 +1,5 @@
+vim.deprecate = function() end
+
 require("config.options")
 require("config.neovide")
 require("config.commands")
