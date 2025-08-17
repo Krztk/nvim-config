@@ -23,6 +23,16 @@ local handle_session_selection = function()
 	end)
 end
 
+vim.api.nvim_create_user_command("FilesChangedInCommits", function(opts)
+	local number_of_commits = tonumber(opts.fargs[1])
+	if number_of_commits == nil then
+		print("argument must be a number")
+		return
+	end
+
+	require("utils.git").changed_files_in_last_x_commits_picker(number_of_commits)
+end, { nargs = 1 })
+
 vim.api.nvim_create_user_command("SessionSave", function(opts)
 	vim.cmd("mksession! " .. session_folder .. opts.fargs[1] .. ".vim")
 	print("Session saved")

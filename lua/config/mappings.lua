@@ -91,17 +91,6 @@ if not status_ok then
 	)
 end
 
--- markdown navigation
-local function get_project_root()
-	-- Try to find git root first
-	local git_root = vim.fn.systemlist("git rev-parse --show-toplevel")[1]
-	if vim.v.shell_error == 0 and git_root and git_root ~= "" then
-		return git_root
-	end
-	-- Fallback to current working directory
-	return vim.fn.getcwd()
-end
-
 local function normalize_path(path)
 	-- Convert forward slashes to appropriate separator for the OS
 	if vim.fn.has("win32") == 1 then
@@ -115,7 +104,7 @@ local function resolve_filepath(link_path, current_file_dir)
 
 	if link_path:match("^/") then
 		-- Absolute path from project root
-		local project_root = get_project_root()
+		local project_root = require("utils.path").get_project_root()
 		filepath = vim.fn.resolve(project_root .. link_path)
 	elseif link_path:match("^%./") then
 		-- Relative to current file's directory

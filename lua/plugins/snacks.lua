@@ -11,23 +11,9 @@ return {
 			{
 				"<leader>sc",
 				function()
-					local files = require("lua.utils.git").git_files_changed_in_x_commits(1)
-
-					local picker_files = {}
-					for _, v in pairs(files) do
-						table.insert(
-							picker_files,
-							{ text = "[" .. v.status .. "] " .. v.file, info = v.status, file = v.file }
-						)
-					end
-
-					Snacks.picker.pick({
-						items = picker_files,
-						format = function(item, picker)
-							return { { item.text } }
-						end,
-					})
+					require("utils.git").changed_files_in_last_x_commits_picker(1)
 				end,
+				desc = "Changed files in the last commit",
 			},
 			{
 				"<leader>sb",
@@ -62,7 +48,7 @@ return {
 				function()
 					Snacks.picker.help()
 				end,
-				desc = "Git diff",
+				desc = "Help",
 			},
 		},
 	},
