@@ -1,5 +1,5 @@
 return {
-	{
-		"Krztk/vim-slash",
-	},
+  {
+    "Krztk/vim-slash",
+  },
 }
