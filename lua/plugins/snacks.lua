@@ -23,6 +23,13 @@ return {
 				desc = "Buffers",
 			},
 			{
+				"<leader>sf",
+				function()
+					Snacks.picker.files()
+				end,
+				desc = "Files",
+			},
+			{
 				"<leader>sg",
 				function()
 					Snacks.picker.grep()

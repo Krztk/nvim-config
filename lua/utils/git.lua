@@ -66,7 +66,6 @@ function M.changed_files_in_last_x_commits_picker(number_of_commits)
 			} }
 		end,
 		title = "Changed in last " .. number_of_commits .. " commits",
-		layout = "telescope",
 	})
 end
 
