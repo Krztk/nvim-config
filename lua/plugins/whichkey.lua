@@ -13,6 +13,7 @@ return {
         { "<leader>d", group = "[D]ocument" },
         { "<leader>r", group = "[R]ename/[R]eplace" },
         { "<leader>s", group = "[S]earch" },
+        { "<leader>h", group = "[H]url" },
         { "<leader>w", group = "[W]orkspace" },
       })
     end,
