@@ -60,11 +60,16 @@ end
 ls.add_snippets("typescriptreact", {
 	s("di", fmt("<div>{}</div>", { i(0) })),
 	s('di"', fmt('<div className="{}">{}</div>', { i(1), i(0) })),
+	s("dis", fmt("<div className={{{}}}>{}</div>", { i(1), i(0) })),
 	s("di{", fmt("<div className={{{}}}>{}</div>", { i(1), i(0) })),
 	s("tg", fmt("<{}>{}</{}>", { i(1), i(0), rep(1) })),
 	s('tg"', fmt('<{} className="{}">{}</{}>', { i(1), i(2), i(0), rep(1) })),
+	s("tgs", fmt("<{} className={{{}}}>{}</{}>", { i(1), i(2), i(0), rep(1) })),
 	s("tg{", fmt("<{} className={{{}}}>{}</{}>", { i(1), i(2), i(0), rep(1) })),
 	s("cn", fmt('className="{}"{}', { i(1), i(0) })),
+	s("cns", fmt("className={{{}}}{}", { i(1), i(0) })),
+	s("cncx", fmt('className={{cn("{}"{})}}{}', { i(1), i(2), i(0) })),
+	s("cx", fmt("cn({}){}", { i(1), i(0) })),
 	s(
 		"rsf",
 		fmt(
@@ -115,7 +120,12 @@ ls.add_snippets("typescriptreact", {
 	),
 	s("pro", fmt("{{{}}} : {}", { i(2), i(1, "Props") })),
 	-- tailwindcss
-	s("fcb", fmt("flex items-center justify-between", {})),
+	s("bor", fmt("border border-{}", { i(1) })),
+	s("out", fmt("outline outline-{}", { i(1) })),
+	s("st>", fmt("[&>{}]:{}", { i(1), i(0) })),
+	s("st_", fmt("[&_{}]:{}", { i(1), i(0) })),
+	s("grpr", fmt("group/{}", { i(1) })),
+	s("grph", fmt("group-hover/{}:{}", { i(1), i(0) })),
 })
 
 ls.filetype_extend("typescriptreact", { "typescript" })
