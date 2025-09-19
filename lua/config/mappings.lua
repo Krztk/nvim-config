@@ -246,3 +246,52 @@ vim.api.nvim_create_user_command("PopulateQf", function()
   vim.fn.setqflist({}, " ", { title = "From Visual Selection", items = qf_items })
   vim.cmd("copen")
 end, { range = true })
+
+--
+vim.keymap.set("c", "<C-v>", function()
+  local cmdline = vim.fn.getcmdline()
+  local pos = vim.fn.getcmdpos()
+
+  local prefixes = { "s/", "g/", "g!/", "v/", "/", "?" }
+
+  local best_idx, best_pfx
+  for _, pfx in ipairs(prefixes) do
+    local i = cmdline:find(pfx, 1, true)
+    if i and (not best_idx or i < best_idx) then
+      best_idx, best_pfx = i, pfx
+    end
+  end
+
+  if not best_idx then
+    return ""
+  end
+
+  local pfx_len = #best_pfx
+  local insert_pos = best_idx + pfx_len
+  local magic = "\\v"
+  local after = cmdline:sub(insert_pos, insert_pos + #magic - 1)
+
+  local new_cmdline, delta
+  if after == magic then
+    new_cmdline = cmdline:sub(1, insert_pos - 1) .. cmdline:sub(insert_pos + #magic)
+    delta = -#magic
+  else
+    new_cmdline = cmdline:sub(1, insert_pos - 1) .. magic .. cmdline:sub(insert_pos)
+    delta = #magic
+  end
+
+  local new_pos = pos
+  if insert_pos <= pos then
+    new_pos = pos + delta
+  end
+
+  if new_pos < 1 then
+    new_pos = 1
+  end
+  if new_pos > (#new_cmdline + 1) then
+    new_pos = #new_cmdline + 1
+  end
+
+  vim.fn.setcmdline(new_cmdline, new_pos)
+  return ""
+end, { noremap = true, desc = "Toggle very magic regex mode" })
