@@ -158,6 +158,19 @@ return {
         vim.lsp.config(server_name, server_config)
       end
 
+      vim.filetype.add({
+        extension = {
+          hurl = "hurl",
+        },
+      })
+
+      vim.lsp.config("kt-hurl-lsp", {
+        cmd = { "kt-hurl-lsp" },
+        filetypes = { "hurl" },
+        capabilities = capabilities,
+      })
+      vim.lsp.enable("kt-hurl-lsp")
+
       require("mason").setup()
 
       local ensure_installed = vim.tbl_keys(servers or {})

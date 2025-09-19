@@ -1,6 +1,9 @@
 return {
   {
-    "jellydn/hurl.nvim",
+    -- "jellydn/hurl.nvim",
+    "Krztk/hurl.nvim",
+    branch = "fix/artifacts-in-response-windows",
+    lazy = false,
     dependencies = {
       "MunifTanjim/nui.nvim",
       "nvim-lua/plenary.nvim",
@@ -8,6 +11,7 @@ return {
     },
     ft = "hurl",
     opts = {
+      auto_close = false,
       -- Show debugging info
       debug = false,
       -- Show notification on run
@@ -32,8 +36,8 @@ return {
       -- Default mappings for the response popup or split views
       mappings = {
         close = "q", -- Close the response popup or split view
-        next_panel = "<C-n>", -- Move to the next response popup window
-        prev_panel = "<C-p>", -- Move to the previous response popup window
+        next_panel = "<c-n>", -- Move to the next response popup window
+        prev_panel = "<c-p>", -- Move to the previous response popup window
       },
     },
     keys = {
