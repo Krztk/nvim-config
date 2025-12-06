@@ -74,8 +74,7 @@ ls.add_snippets("typescriptreact", {
     "rsf",
     fmt(
       [[
-	export const {} = () => {{
-
+	export default function {}() {{
 	  return (
 	    {}
 	  )
@@ -92,7 +91,27 @@ ls.add_snippets("typescriptreact", {
     )
   ),
   s(
-    "rsfp",
+    "raf",
+    fmt(
+      [[
+	export const {} = () => {{
+	  return (
+	    {}
+	  )
+	}}
+	  ]],
+      {
+        d(1, function(_, snip)
+          return sn(1, {
+            i(1, suggest_filename(snip.env.TM_FILENAME_BASE, snip.env.TM_DIRECTORY)),
+          })
+        end, {}),
+        i(0),
+      }
+    )
+  ),
+  s(
+    "rafp",
     fmt(
       [[
   interface Props {{

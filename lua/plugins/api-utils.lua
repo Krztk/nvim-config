@@ -41,6 +41,7 @@ return {
       },
     },
     keys = {
+      { "<leader>he", "<cmd>HurlRunnerAt<CR>", desc = "Run api request" },
       { "<leader>hm", "<cmd>HurlToggleMode<CR>", desc = "Hurl Toggle Mode" },
       { "<leader>hv", "<cmd>HurlVerbose<CR>", desc = "Run Api in verbose mode" },
       { "<leader>hV", "<cmd>HurlVeryVerbose<CR>", desc = "Run Api in very verbose mode" },
