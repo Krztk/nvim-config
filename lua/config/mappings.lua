@@ -30,10 +30,6 @@ vim.keymap.set("n", "<leader>ts", "<cmd>source %<CR>")
 vim.keymap.set("n", "<leader>tl", ":.lua<CR>")
 vim.keymap.set("v", "<leader>tl", ":lua<CR>")
 
--- quickfix
-vim.keymap.set("n", "<M-j>", "<cmd>cnext<CR>")
-vim.keymap.set("n", "<M-k>", "<cmd>cprev<CR>")
-
 -- format range
 vim.keymap.set("", "<leader>dc", function()
   require("conform").format({ async = true }, function(err)
