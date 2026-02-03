@@ -11,9 +11,10 @@ return {
       {
         "<leader>sc",
         function()
-          require("utils.git").changed_files_in_last_x_commits_picker(1)
+          local count = vim.v.count1
+          require("utils.git").changed_files_in_last_x_commits_picker(count)
         end,
-        desc = "Changed files in the last commit",
+        desc = "Changed files in the n last commits",
       },
       {
         "<leader>sb",
