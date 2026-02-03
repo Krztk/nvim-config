@@ -5,7 +5,6 @@ return {
       "williamboman/mason.nvim",
       "williamboman/mason-lspconfig.nvim",
       { "j-hui/fidget.nvim", opts = {} },
-      { "Krztk/omnisharp-extended-lsp.nvim", branch = "feat/add-support-for-snacks-picker" },
       "Issafalcon/lsp-overloads.nvim",
     },
     config = function()
@@ -34,12 +33,6 @@ return {
           map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
 
           local client = vim.lsp.get_client_by_id(event.data.client_id)
-
-          if client and client.name == "omnisharp" then
-            map("gd", require("omnisharp_extended").snacks_picker_lsp_definitions, "[G]oto [D]efinition")
-            map("gr", require("omnisharp_extended").snacks_picker_lsp_references, "[G]oto [R]eferences")
-            map("gI", require("omnisharp_extended").snacks_picker_lsp_implementation, "[G]oto [I]mplementation")
-          end
 
           if client and client.server_capabilities.inlayHintProvider then
             map("<leader>th", function()
