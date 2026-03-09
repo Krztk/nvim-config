@@ -3,11 +3,15 @@ return {
     "folke/which-key.nvim",
     event = "VimEnter", -- Sets the loading event to 'VimEnter'
     config = function() -- This is the function that runs, AFTER loading
-      require("which-key").setup()
+      local wk = require("which-key")
+      wk.setup({
+        plugins = {
+          registers = false,
+        },
+      })
 
       -- Document existing key chains
-      require("which-key").add({
-
+      wk.add({
         { "<leader>c", group = "[C]ode" },
         { "<leader>p", group = "[P]ilot" },
         { "<leader>d", group = "[D]ocument" },

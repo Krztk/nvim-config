@@ -16,7 +16,6 @@ return {
           "tsx",
           "javascript",
           "typescript",
-          "hurl",
         },
         -- Autoinstall languages that are not installed
         auto_install = false,
