@@ -49,7 +49,7 @@ vim.api.nvim_create_user_command("PathSet", function()
 end, { nargs = 0 })
 
 local function edit_neovim()
-  require("snacks.picker").files({ cwd = vim.fn.stdpath("config") })
+  require("fzf-lua").files({ cwd = vim.fn.stdpath("config") })
 end
 
 vim.api.nvim_create_user_command("Config", edit_neovim, { nargs = 0 })

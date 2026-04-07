@@ -45,25 +45,7 @@ end, { desc = "Format code" })
 -- terminal
 vim.keymap.set("t", "<C-k><C-j>", [[<C-\><C-n>]], { noremap = true, silent = true })
 
---diff
-local function toggle_diffview(cmd)
-  if next(require("diffview.lib").views) == nil then
-    vim.cmd(cmd)
-  else
-    vim.cmd("DiffviewClose")
-  end
-end
-
-vim.keymap.set("n", "<leader>dvi", function()
-  toggle_diffview("DiffviewOpen")
-end, { desc = "Diff Index", noremap = true, silent = true })
-vim.keymap.set("n", "<leader>dvm", function()
-  toggle_diffview("DiffviewOpen master..HEAD")
-end, { desc = "Diff Master", noremap = true, silent = true })
-vim.keymap.set("n", "<leader>dvf", function()
-  toggle_diffview("DiffviewFileHistory %")
-end, { desc = "Current file diff", noremap = true, silent = true })
-
+-- diff
 local diff_opts = {
   "filler,internal,closeoff,algorithm:histogram,context:3,linematch:60",
   "internal,filler,closeoff,indent-heuristic,linematch:60,algorithm:histogram,context:3",

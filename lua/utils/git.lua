@@ -1,5 +1,5 @@
 local M = {}
-local picker = require("snacks.picker")
+local picker = require("fzf-lua")
 
 function M.git_files_changed_in_x_commits(number_of_commits)
   if type(number_of_commits) ~= "number" then
@@ -47,25 +47,19 @@ end
 
 function M.changed_files_in_last_x_commits_picker(number_of_commits)
   local items = M.git_files_changed_in_x_commits(number_of_commits)
-  local finder_items = {}
 
+  local entries = {}
   for _, item in ipairs(items) do
-    local text = item.file
-    table.insert(finder_items, {
-      text = text,
-      item = item,
-      file = item.file,
-    })
+    table.insert(entries, item.file)
   end
 
-  picker.pick({
-    items = finder_items,
-    format = function(item)
-      return { {
-        item.text,
-      } }
-    end,
-    title = "Changed in last " .. number_of_commits .. " commits",
+  picker.fzf_exec(entries, {
+    prompt = "Changed in last " .. number_of_commits .. " commits> ",
+    actions = {
+      ["default"] = function(selected)
+        vim.cmd("edit " .. selected[1])
+      end,
+    },
   })
 end
 
