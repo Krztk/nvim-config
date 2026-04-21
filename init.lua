@@ -6,12 +6,13 @@ require("config.commands")
 require("config.mappings")
 require("config.lists")
 require("config.autocommands")
+require("config.treesitter")
 
 vim.pack.add({
   "https://github.com/folke/tokyonight.nvim",
   "https://github.com/nvim-tree/nvim-web-devicons",
+  "https://github.com/folke/ts-comments.nvim",
   "https://github.com/nvim-mini/mini.files",
-  "https://github.com/nvim-mini/mini.comment",
   "https://github.com/nvim-mini/mini.surround",
   "https://github.com/ibhagwan/fzf-lua",
   "https://github.com/Krztk/vim-slash",
@@ -30,7 +31,6 @@ vim.pack.add({
 vim.cmd.colorscheme("tokyonight-night")
 local minifiles = require("mini.files")
 minifiles.setup()
-require("mini.comment").setup()
 require("mini.surround").setup()
 
 vim.keymap.set("n", "<leader>fe", minifiles.open, { desc = "MiniFiles open" })
@@ -43,9 +43,22 @@ vim.keymap.set("n", "<leader>fE", function()
   end
 end, { desc = "mini.files open current" })
 
+-- comments
+require("ts-comments").setup()
+
 -- pickers
 
 local fzf = require("fzf-lua")
+
+fzf.setup({
+  files = {
+    actions = { ["ctrl-q"] = { fn = fzf.actions.file_sel_to_qf, prefix = "select-all" } },
+  },
+  grep = {
+    actions = { ["ctrl-q"] = { fn = fzf.actions.file_sel_to_qf, prefix = "select-all" } },
+  },
+})
+fzf.register_ui_select()
 
 vim.keymap.set("n", "<leader>sb", fzf.buffers, { desc = "Buffers" })
 vim.keymap.set("n", "<leader>sf", fzf.files, { desc = "Files" })
@@ -172,6 +185,14 @@ vim.api.nvim_create_autocmd("LspAttach", {
         display_automatically = false,
       })
     end
+
+    if client and client.server_capabilities.semanticTokensProvider then
+      client.server_capabilities.semanticTokensProvider = nil
+    end
+
+    if client and client.name == "tailwindcss" then
+      vim.lsp.document_color.enable(false, { id = client.id })
+    end
   end,
 })
 
@@ -200,7 +221,7 @@ local servers = {
         runtime = { version = "LuaJIT" },
         workspace = {
           checkThirdParty = false,
-          library = vim.api.nvim_get_runtime_file("", true),
+          library = vim.api.nvim_get_runtime_file("", false),
         },
       },
     },
@@ -219,7 +240,7 @@ local servers = {
 }
 
 vim.lsp.config("*", {
-  capabilities = vim.lsp.protocol.make_client_capabilities(),
+  capabilities = capabilities,
 })
 
 for server_name, server_config in pairs(servers) do

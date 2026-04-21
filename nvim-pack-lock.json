@@ -32,10 +32,6 @@
       "rev": "b03fb0f20bc1d43daf558cda981a2be22e73ac42",
       "src": "https://github.com/williamboman/mason.nvim"
     },
-    "mini.comment": {
-      "rev": "8e5ff3ed3cc0e8f216617aae01020c00c20f7a87",
-      "src": "https://github.com/nvim-mini/mini.comment"
-    },
     "mini.files": {
       "rev": "ced297546b8fdb8e215d416d4753a735514a2fe0",
       "src": "https://github.com/nvim-mini/mini.files"
@@ -67,6 +63,10 @@
     "tokyonight.nvim": {
       "rev": "cdc07ac78467a233fd62c493de29a17e0cf2b2b6",
       "src": "https://github.com/folke/tokyonight.nvim"
+    },
+    "ts-comments.nvim": {
+      "rev": "123a9fb12e7229342f807ec9e6de478b1102b041",
+      "src": "https://github.com/folke/ts-comments.nvim"
     },
     "vim-slash": {
       "rev": "9c169e4d5c8c5c18b3875199fe7729beeb447b93",
