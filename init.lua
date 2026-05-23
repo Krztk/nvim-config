@@ -26,6 +26,7 @@ vim.pack.add({
   "https://github.com/L3MON4D3/LuaSnip",
   "https://github.com/saadparwaiz1/cmp_luasnip",
   "https://github.com/seblyng/roslyn.nvim",
+  "https://github.com/dlyongemallo/diffview.nvim",
 })
 
 vim.cmd.colorscheme("tokyonight-night")
@@ -67,7 +68,8 @@ vim.keymap.set("n", "<leader>ss", fzf.git_status, { desc = "Git status" })
 
 -- formatting
 
-local prettier = { "eslint_d", "prettierd", stop_after_first = false }
+-- local prettier = { "eslint_d", "prettierd", stop_after_first = false }
+local prettier = { "eslint", "prettierd", stop_after_first = false }
 
 require("conform").setup({
   notify_on_error = false,
@@ -200,18 +202,28 @@ local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
 local servers = {
   ts_ls = {
-    capabilities = {},
+    settings = {
+      typescript = {
+        inlayHints = {
+          includeInlayParameterNameHints = "all",
+          includeInlayVariableTypeHints = true,
+          includeInlayFunctionLikeReturnTypeHints = true,
+          includeInlayPropertyDeclarationTypeHints = true,
+          includeInlayEnumMemberValueHints = true,
+        },
+      },
+    },
   },
-  -- eslint = {
-  --   filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
-  --   settings = {
-  --     workingDirectory = {
-  --       mode = "auto",
-  --     },
-  --     format = { enable = false },
-  --     lint = { enable = true },
-  --   },
-  -- },
+  eslint = {
+    filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
+    settings = {
+      workingDirectory = {
+        mode = "auto",
+      },
+      format = { enable = false },
+      lint = { enable = true },
+    },
+  },
   lua_ls = {
     settings = {
       Lua = {
@@ -295,4 +307,125 @@ cmp.setup({
     { name = "luasnip" },
     { name = "path" },
   },
+})
+
+-- diff view
+local actions = require("diffview.actions")
+require("diffview").setup({
+  enhanced_diff_hl = true,
+  use_icons = true,
+  view = {
+    default = { layout = "diff2_horizontal" },
+    merge_tool = { layout = "diff3_horizontal" },
+  },
+  file_panel = {
+    listing_style = "tree",
+    win_config = { position = "left", width = 35 }, -- Use "auto" to fit content
+  },
+  hooks = {}, -- See :h diffview-config-hooks
+  keymaps = {
+    disable_defaults = true,
+    view = {
+      {
+        "n",
+        "<leader>gb",
+        actions.toggle_files,
+        { desc = "Toggle the file panel." },
+      },
+      {
+        "n",
+        "g<C-x>",
+        actions.cycle_layout,
+        { desc = "Cycle through available layouts." },
+      },
+      {
+        "n",
+        "[x",
+        actions.prev_conflict,
+        { desc = "In the merge-tool: jump to the previous conflict" },
+      },
+      {
+        "n",
+        "]x",
+        actions.next_conflict,
+        { desc = "In the merge-tool: jump to the next conflict" },
+      },
+      {
+        "n",
+        "<leader>do",
+        actions.conflict_choose("ours"),
+        { desc = "Choose the OURS version of a conflict" },
+      },
+      {
+        "n",
+        "<leader>dt",
+        actions.conflict_choose("theirs"),
+        { desc = "Choose the THEIRS version of a conflict" },
+      },
+      {
+        "n",
+        "<leader>db",
+        actions.conflict_choose("base"),
+        { desc = "Choose the BASE version of a conflict" },
+      },
+      {
+        "n",
+        "<leader>da",
+        actions.conflict_choose("all"),
+        { desc = "Choose all the versions of a conflict" },
+      },
+      {
+        "n",
+        "dx",
+        actions.conflict_choose("none"),
+        { desc = "Delete the conflict region" },
+      },
+    },
+    diff1 = {
+      -- Mappings in single window diff layouts
+      { "n", "g?", actions.help({ "view", "diff1" }), { desc = "Open the help panel" } },
+    },
+    diff2 = {
+      -- Mappings in 2-way diff layouts
+      { "n", "g?", actions.help({ "view", "diff2" }), { desc = "Open the help panel" } },
+    },
+    diff3 = {
+      -- Mappings in 3-way diff layouts
+      {
+        { "n", "x" },
+        "2do",
+        actions.diffget("ours"),
+        { desc = "Obtain the diff hunk from the OURS version of the file" },
+      },
+      {
+        { "n", "x" },
+        "3do",
+        actions.diffget("theirs"),
+        { desc = "Obtain the diff hunk from the THEIRS version of the file" },
+      },
+      { "n", "g?", actions.help({ "view", "diff3" }), { desc = "Open the help panel" } },
+    },
+    diff4 = {
+      -- Mappings in 4-way diff layouts
+      {
+        { "n", "x" },
+        "1do",
+        actions.diffget("base"),
+        { desc = "Obtain the diff hunk from the BASE version of the file" },
+      },
+      {
+        { "n", "x" },
+        "2do",
+        actions.diffget("ours"),
+        { desc = "Obtain the diff hunk from the OURS version of the file" },
+      },
+      {
+        { "n", "x" },
+        "3do",
+        actions.diffget("theirs"),
+        { desc = "Obtain the diff hunk from the THEIRS version of the file" },
+      },
+      { "n", "g?", actions.help({ "view", "diff4" }), { desc = "Open the help panel" } },
+    },
+  }, -- See :h diffview-config-keymaps
 })

@@ -3,4 +3,4 @@
 - "fzf"
 - "stylua"
 - "prettierd"
-- "eslint_d"
+- "eslint - lsp"
