@@ -69,7 +69,8 @@ vim.keymap.set("n", "<leader>ss", fzf.git_status, { desc = "Git status" })
 -- formatting
 
 -- local prettier = { "eslint_d", "prettierd", stop_after_first = false }
-local prettier = { "eslint", "prettierd", stop_after_first = false }
+-- local prettier = { "eslint", "prettierd", stop_after_first = false }
+local prettier = { "prettierd", stop_after_first = false }
 
 require("conform").setup({
   notify_on_error = false,
@@ -204,13 +205,13 @@ local servers = {
   ts_ls = {
     settings = {
       typescript = {
-        inlayHints = {
-          includeInlayParameterNameHints = "all",
-          includeInlayVariableTypeHints = true,
-          includeInlayFunctionLikeReturnTypeHints = true,
-          includeInlayPropertyDeclarationTypeHints = true,
-          includeInlayEnumMemberValueHints = true,
-        },
+        -- inlayHints = {
+        --   includeInlayParameterNameHints = "all",
+        --   includeInlayVariableTypeHints = true,
+        --   includeInlayFunctionLikeReturnTypeHints = true,
+        --   includeInlayPropertyDeclarationTypeHints = true,
+        --   includeInlayEnumMemberValueHints = true,
+        -- },
       },
     },
   },
